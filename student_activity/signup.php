@@ -1,5 +1,15 @@
 <?php
     require 'connect.php';
+    if (isset($_POST['submit'])) {
+      $studentID = $_POST['studentID'];
+      $studentname = $_POST['studentname'];
+      $MajoID = $_POST['MajoID'];
+      $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+      $sql = "insert into
+       student (studentID,studentname, majorID, password) 
+       values('{$studentID}','{$studentname}','{$MajoID}','{$password}')";
+       $conn->query($sql);
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -23,23 +33,34 @@
         z-index: 2;
       }
     </style>
+    <script>
+
+    function validate() {
+        let p1 = document.querySelector('#password').value;
+        let p2 = document.querySelector('#re-password').value;
+        if (p1 != p2) {
+          alert('Passwords are not identical.');
+          event.preventDefault();
+        }
+    }
+    </script>
   </head>
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
     <main class="form-signup w-100 m-auto">
-      <form>
+      <form action="signup.php" method="post" onsubmit="validate()">
         <img class="mb-4" src="image/Activity-removebg-preview.png" alt="" width="300" height="200">
         <h1 class="h3 mb-3 fw-normal">Please sign up</h1>
     
         <div class="form-floating mb-2">
-          <input type="text" class="form-control" id="student-id" placeholder=" ">
+          <input required  name= "studentID" type="text" class="form-control" id="student-id" placeholder=" ">
           <label for="student-id">Student ID</label>
         </div>
         <div class="form-floating mb-2">
-          <input type="text" class="form-control" id="Student Name" placeholder=" ">
+          <input required name= "studentname" type="text" class="form-control" id="Student Name" placeholder=" ">
           <label for="Student Name">Student Name</label>
         </div>
         <div class="form-floating mb-2">
-          <select class="form-select" id="Major">
+          <select name="MajoID" class="form-select" id="Major">
 <?php
 $sql = 'select * from major order by faculty';
 $result = $conn->query($sql);
@@ -52,15 +73,15 @@ $conn->close();
           <label for="Major">Major</label>
         </div>
         <div class="form-floating mb-2">
-          <input type="password" class="form-control" id="password" placeholder=" ">
+          <input required name= "password"type="password" class="form-control" id="password" placeholder=" ">
           <label for="password">Password</label>
         </div>
         <div class="form-floating mb-2">
-          <input type="text" class="form-control" id="re-password" placeholder=" ">
+          <input required type="text" class="form-control" id="re-password" placeholder=" ">
           <label for="Student Name">Retype-Password</label>
         </div>
     
-        <button class="btn btn-primary w-100 py-2" type="submit">Sign up</button>
+        <button name="submit"class="btn btn-primary w-100 py-2" type="submit">Sign up</button>
         
       </form>
     </main>
