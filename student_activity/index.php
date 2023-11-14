@@ -1,8 +1,8 @@
 <?php
 include 'header.php';
 $sql = "SELECT * FROM activity A
-      WHERE start >= NOW() AND available > 0
-      AND NOT EXISTS (
+        WHERE start >= NOW() AND available > 0
+        AND NOT EXISTS (
         SELECT activityID
         FROM register
         WHERE studentID=
